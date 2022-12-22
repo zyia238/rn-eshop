@@ -5,7 +5,7 @@ import ProductItem from '../components/ProductItem.component'
 import {View, Text , FlatList} from 'react-native'
 import { useSelector } from 'react-redux'
 
-const Overview = () => {
+const Overview = ({navigation}) => {
     const [products,setProducts] = useState(useSelector(state => state.products.availableProducts))
 
     useEffect(()=>{
@@ -13,13 +13,12 @@ const Overview = () => {
         products.forEach(item => {
             newProducts = [...newProducts,...item.items]
         })
-        console.log(newProducts)
         setProducts(newProducts)
     },[])
 
     const productItem = ({item}) => {
         return <View>
-            <ProductItem {...item}/>
+            <ProductItem {...item} navigation={navigation}/>
         </View>
     }
 

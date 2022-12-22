@@ -1,20 +1,23 @@
-import {View,Text,Image,Button,StyleSheet} from 'react-native'
+import {View,Text,Image,Button,StyleSheet ,TouchableOpacity} from 'react-native'
 
-const ProductItem = ({imageUrl,name,price}) => {
-    return <View style={styles.wrapper}>
-        <View style={styles.imageWrapper}>
-            <Image style={styles.image} source = {{uri:imageUrl}} ></Image>
+const ProductItem = ({imageUrl,name,price ,navigation}) => {
+    return (
+    <TouchableOpacity onPress={()=>{navigation.navigate('detail',{name,price,imageUrl})}}>
+        <View style={styles.wrapper}>
+            <View style={styles.imageWrapper}>
+                <Image style={styles.image} source = {{uri:imageUrl}} ></Image>
+            </View>
+            <View style={styles.textWrapper}>
+                <Text style={styles.title}>{name}</Text>
+                <Text style={styles.price}>${price}</Text>
+            </View>
+            <View style={styles.buttons}>
+                <Button title="View details" onPress={()=>{navigation.navigate('detail',{name,price,imageUrl})}}/>
+                <Button title="Add to cart"/>
+            </View>
         </View>
-        <View style={styles.textWrapper}>
-            <Text style={styles.title}>{name}</Text>
-            <Text style={styles.price}>${price.toFixed(2)}</Text>
-        </View>
-        <View style={styles.buttons}>
-            <Button title="View details"/>
-            <Button title="Add to cart"/>
-        </View>
-        
-    </View>
+    </TouchableOpacity>
+    )
 }
 
 const styles = StyleSheet.create({
