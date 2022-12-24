@@ -1,8 +1,10 @@
 import {View,Text,Image,Button,StyleSheet ,TouchableOpacity} from 'react-native'
+import { useDispatch } from 'react-redux'
 
-const ProductItem = ({imageUrl,name,price ,navigation}) => {
+const ProductItem = ({id,imageUrl,name,price ,navigation, children , toPage}) => {
+
     return (
-    <TouchableOpacity onPress={()=>{navigation.navigate('detail',{name,price,imageUrl})}}>
+    <TouchableOpacity onPress={()=>{navigation.navigate(toPage,{name,price,imageUrl,id})}}>
         <View style={styles.wrapper}>
             <View style={styles.imageWrapper}>
                 <Image style={styles.image} source = {{uri:imageUrl}} ></Image>
@@ -12,8 +14,7 @@ const ProductItem = ({imageUrl,name,price ,navigation}) => {
                 <Text style={styles.price}>${price}</Text>
             </View>
             <View style={styles.buttons}>
-                <Button title="View details" onPress={()=>{navigation.navigate('detail',{name,price,imageUrl})}}/>
-                <Button title="Add to cart"/>
+                {children}
             </View>
         </View>
     </TouchableOpacity>

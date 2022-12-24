@@ -2,7 +2,7 @@ import { View , StyleSheet , Text , TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { useDispatch } from 'react-redux'
 
-const CartItem = ({quantity, price, name}) => {
+const CartItem = ({quantity, price, name , deletable}) => {
     const dispath = useDispatch()
     const deleteCartItem = () => {
         dispath({
@@ -21,9 +21,9 @@ const CartItem = ({quantity, price, name}) => {
             <Text style={styles.price}>
                 ${price}
             </Text>
-            <TouchableOpacity onPress={deleteCartItem}>
+            {deletable && <TouchableOpacity onPress={deleteCartItem}>
                 <Ionicons name="ios-trash" size={23}  />
-            </TouchableOpacity>
+            </TouchableOpacity>}
         </View>
     )
 }
@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
         marginRight:12
     },
     name:{
-        fontSize:18
+        fontSize:18,
+        flex:1
     },
     price:{
         fontSize:18

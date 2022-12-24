@@ -15,12 +15,12 @@ const ProductsReducer = (state = defaultState, action) => {
   switch (type) {
     case "ADD_TO_CART":
       let target;
-      target = newProducts.find((item) => item.name === payload);
+      target = newProducts.find((item) => item.id === payload.id);
       if (!state.cartProducts[target.name]) {
         const newCartItem = {
-          name: target.name,
+          name: payload.name,
           quantity: 1,
-          price: target.price,
+          price: payload.price,
         };
 
         return {
@@ -57,6 +57,21 @@ const ProductsReducer = (state = defaultState, action) => {
         },
         totalPrice: state.totalPrice - diff,
       };
+
+    case "CLEAR_CART":
+      return defaultState;
+    case "DELETE_ITEM_CART":
+      if (state.cartProducts[payload]) {
+        const newCartProducts = { ...state.cartProducts };
+        let newPrice =
+          newCartProducts[payload].price * newCartProducts[payload].quantity;
+        delete newCartProducts[payload];
+        return {
+          ...state,
+          cartProducts: newCartProducts,
+          totalPrice: state.totalPrice - newPrice,
+        };
+      }
 
     default:
       return state;

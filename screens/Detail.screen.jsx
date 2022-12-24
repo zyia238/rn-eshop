@@ -1,8 +1,13 @@
+import { useEffect } from 'react'
+
 import {View, Text , StyleSheet , ScrollView , Image , Button} from 'react-native'
 import {useDispatch} from 'react-redux'
 
 const Detail = ({navigation,route}) => {
-    navigation.setOptions({title:route.params.myname})
+    useEffect(()=>{
+        navigation.setOptions({title:route.params.myname})
+    },[])
+    
     const {name,price,imageUrl} = route.params
     const dispatch = useDispatch()
 

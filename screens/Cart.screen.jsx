@@ -1,26 +1,44 @@
 import {View, Text , StyleSheet , ScrollView , Image , Button , FlatList} from 'react-native'
 import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import CartItem from '../components/CartItem.component'
 
 const Cart = ({navigation,route}) => {
     const cartItems = useSelector(state => state.cart.cartProducts)
     const totalPrice = useSelector(state => state.cart.totalPrice)
+    const dispatch = useDispatch()
     let transformedItemList = []
     for(let key in cartItems){
         transformedItemList.push(cartItems[key])
+    }
+
+    const handleOrderNow = () => {
+        const newOrderItem = {
+            date:new Date().toLocaleString(),
+            cartItems,
+            totalPrice
+        }
+        
+        dispatch({
+            type:'CREATE_ORDER',
+            payload:newOrderItem
+        })
+        dispatch({
+            type:'CLEAR_CART'
+        })
     }
 
     return (
         <View style={styles.screen}>
             <View style={styles.summary}>
                 <Text style={styles.summaryText}>Total : <Text style={styles.amount}>${totalPrice}</Text></Text>
-                <Button title='Order Now'/>
+                <Button title='Order Now' onPress={handleOrderNow}/>
             </View>
             <View>
                 <Text>CART ITEMS</Text>
                 <FlatList data={transformedItemList} renderItem={({item})=>{
-                    return <CartItem {...item}/>
+                    return <CartItem deletable {...item}/>
                 }}/>
             </View>
         </View>
