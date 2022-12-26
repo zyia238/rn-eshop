@@ -9,7 +9,6 @@ const ProductsReducer = (state = defaultState, action) => {
   switch (type) {
     case "UPDATE_CART_PRODUCT":
       let clone = _.cloneDeep(state.availableProducts);
-      console.log(clone, "dssdsd");
       for (let i = 0; i < clone.length; i++) {
         for (let j = 0; j < clone[i].items.length; j++) {
           if (clone[i].items[j].id === payload.id) {
@@ -24,7 +23,8 @@ const ProductsReducer = (state = defaultState, action) => {
         ...state,
         availableProducts: clone,
       };
-
+    case "ADD_NEW_PRODUCT":
+      return state;
     default:
       return state;
   }

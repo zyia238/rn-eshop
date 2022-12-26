@@ -13,7 +13,8 @@ const Edit = ({navigation,route}) => {
     const products = useSelector(state => state.user.userProducts)
 
     const submittingHandler = useCallback((name,price,imageUrl,id) => {
-            dispatch({
+        if(route.params){
+             dispatch({
                 type:"UPDATE_USER_PRODUCT",
                 payload:{
                     name,
@@ -31,11 +32,31 @@ const Edit = ({navigation,route}) => {
                     id
                 }
             })
+        }else{
+            dispatch(async dispatch=>{
+                const response = await fetch('https://rn-eshop-b9a9c-default-rtdb.firebaseio.com/products.json',{
+                    method:'POST',
+                    ['Content-Type']:'application/json',
+                    body:JSON.stringify({
+                        name,price,imageUrl,id
+                    })
+                })
+
+                const res = await response.json()
+                console.log(res)
+                    dispatch({
+                    type:"ADD_NEW_PRODUCT",
+                    payload:{
+                        res
+                    }
+                })
+            })
+        }
+           
         }
     ,[])
 
     useEffect(()=>{
-        console.log(route.params,'ddddasasaa')
         navigation.setOptions({
              headerRight: () => {
                   return (
@@ -44,7 +65,7 @@ const Edit = ({navigation,route}) => {
                         title="submit"
                         iconName="ios-checkmark"
                         onPress={() => {
-                          submittingHandler(productName,productPrice,productImage,route.params.id)
+                          submittingHandler(productName,productPrice,productImage,route.params?.id)
                         }}
                       />
                     </HeaderButtons>
